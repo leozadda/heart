@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>KIWI <3 </title>
+        <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <style>
+        *,
+        *::after,
+        *::before {
+          box-sizing: inherit;
+          margin: 0;
+          padding: 0;
+        }
+
+        html { font-size: 62.5%; }
+
+        body {
+          box-sizing: border-box;
+          font-family: 'Open Sans', sans-serif;
+          position: relative;
+        }
+
+        .main {
+            background: linear-gradient(
+                45deg,
+                #ff0080 0%,
+                #ff8ed9 25%,
+                #e4c3ff 50%,
+                #d57aff 75%,
+                #6200ff 100%
+                );
+
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          height: 100vh;
+          width: 100%;
+        }
+
+        .card-area {
+          align-items: center;
+          display: flex;
+          flex-wrap: nowrap;
+          height: 100%;
+          justify-content: space-evenly;
+          padding: 1rem;
+        }
+
+        .card-section {
+          align-items: center;
+          display: flex;
+          height: 100%;
+          justify-content: center;
+          width: 100%;
+        }
+
+        .card {
+          background-color: rgba(0,0,0, .05);
+          box-shadow: -.1rem 1.7rem 6.6rem -3.2rem rgba(0,0,0,0.5);
+          height: 20rem;
+          position: relative;
+          transition: all 1s ease;
+          width: 20rem;
+        }
+
+        .flip-card {
+          height: 20rem;
+          perspective: 100rem;
+          position: absolute;
+          right: 0;
+          transition: all 1s ease;
+          visibility: hidden;
+          width: 20rem;
+          z-index: 100;
+        }
+
+        .flip-card > * {
+          visibility: visible;
+        }
+
+        .flip-card__container {
+          height: 100%;
+          position: absolute;
+          right: 0;
+          transform-origin: left;
+          transform-style: preserve-3d;
+          transition: all 1s ease;
+          width: 100%;
+        }
+
+        .card-front,
+        .card-back {
+          backface-visibility: hidden;
+          height: 100%;
+          left: 0;
+          position: absolute;
+          top: 0;
+          width: 100%;
+        }
+
+        .card-front {
+          background-color: #fafbfa;
+          height: 20rem;
+          width: 20rem;
+          background-image: url('./1.png');
+          background-size: cover;
+          background-position: center;
+        }
+
+        .card-back {
+          background-color: #fafbfa;
+          transform: rotateY(180deg);
+        }
+
+        .inside-page {
+          background-color: #fafbfa;
+          box-shadow: inset 20rem 0px 5rem -2.5rem rgba(0,0,0,0.25);
+          height: 100%;
+          padding: 1rem;
+          position: absolute;
+          right: 0;
+          transition: all 1s ease;
+          width: 20rem;
+          z-index: 1;
+          background-image: url('./2.png');
+          background-size: cover;
+          background-position: center;
+        }
+
+        .inside-page__container {
+          align-items: center;
+          display: flex;
+          flex-direction: column;
+          height: 100%;
+          text-align: center; 
+          width: 100%;
+        }
+
+        .card:hover {
+          box-shadow:
+          -.1rem 1.7rem 6.6rem -3.2rem rgba(0,0,0,0.75);
+          width: 40rem;
+        }
+
+        .card:hover .flip-card__container {
+          transform: rotateY(-180deg);
+        }
+
+        .card:hover .inside-page {
+          box-shadow: inset 1rem 0px 5rem -2.5rem rgba(0,0,0,0.1);
+        }
+
+        /* Add styles to hide audio controls */
+        .card-audio {
+          display: none;
+        }
+    </style>
+</head>
+<body>
+    <main class="main">
+        <section class="card-area">
+            <section class="card-section">
+                <div class="card">
+                    <!-- Add audio element -->
+                    <audio id="cardAudio" class="card-audio">
+                        <source src="./harp-song.mp3" type="audio/mpeg">
+                        Your browser does not support the audio element.
+                    </audio>
+                    <div class="flip-card">
+                        <div class="flip-card__container">
+                            <div class="card-front">
+                            </div>
+                            <div class="card-back">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="inside-page">
+                        <div class="inside-page__container">
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <script>
+        const card = document.querySelector('.card');
+        const audio = document.getElementById('cardAudio');
+        let isPlaying = false;
+
+        card.addEventListener('mouseenter', () => {
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+            }
+        });
+
+        card.addEventListener('mouseleave', () => {
+            audio.pause();
+            audio.currentTime = 0;
+            isPlaying = false;
+        });
+    </script>
+</body>
+</html>
