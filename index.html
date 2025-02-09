@@ -14,16 +14,19 @@
           padding: 0;
         }
 
-        html { font-size: 62.5%; }
+        html { 
+            font-size: 62.5%;
+            height: 100%; 
+        }
 
         body {
           box-sizing: border-box;
           font-family: 'Open Sans', sans-serif;
-          position: relative;
-          height: 100vh;
-          width: 100vw;
+          height: 100%;
+          width: 100%;
           margin: 0;
           padding: 0;
+          overflow: hidden;
         }
 
         .main {
@@ -37,12 +40,11 @@
             );
           display: flex;
           flex-direction: column;
+          align-items: center;
           justify-content: center;
-          min-height: 100vh;
+          height: 100%;
           width: 100%;
-          gap: 0;
-          padding: 0;
-          margin: 0
+          gap: 2rem;
         }
 
         .header {
@@ -50,27 +52,19 @@
           text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.136);
           text-align: center;
           font-size: 2em;
-          height: auto;
-          display: flex;
-          justify-content: center;
-          align-items: end;
         }
 
         .card-area {
-          align-items: center;
           display: flex;
-          flex-wrap: nowrap;
-          min-height: auto;
-          justify-content: space-evenly;
+          justify-content: center;
+          align-items: center;
           padding: 1rem;
         }
 
         .card-section {
-          align-items: center;
           display: flex;
-          height: 100%;
           justify-content: center;
-          width: 100%;
+          align-items: center;
         }
 
         .card {
@@ -168,8 +162,7 @@
           box-shadow: inset 1rem 0px 5rem -2.5rem rgba(0,0,0,0.1);
         }
 
-        /* Media query for smaller screens */
-        @media (max-width: 480px) {
+        @media (max-height: 600px) {
           .card {
             height: 16rem;
             width: 16rem;
@@ -185,6 +178,10 @@
           .inside-page {
             height: 16rem;
             width: 16rem;
+          }
+
+          .header {
+            font-size: 1.5em;
           }
         }
 
@@ -227,7 +224,6 @@
         const audio = document.getElementById('cardAudio');
         let isPlaying = false;
 
-        // Function to toggle card state
         function toggleCard() {
             card.classList.toggle('active');
             
@@ -243,16 +239,14 @@
             }
         }
 
-        // Handle both click and touch events
         card.addEventListener('click', toggleCard);
         card.addEventListener('touchend', function(e) {
-            e.preventDefault(); // Prevent default touch behavior
+            e.preventDefault();
             toggleCard();
         });
 
-        // Optional: Keep mouse events for desktop
         card.addEventListener('mouseenter', () => {
-            if (!('ontouchstart' in window)) { // Only for non-touch devices
+            if (!('ontouchstart' in window)) {
                 card.classList.add('active');
                 if (!isPlaying) {
                     audio.play().catch(e => console.log('Audio play failed:', e));
@@ -262,7 +256,7 @@
         });
 
         card.addEventListener('mouseleave', () => {
-            if (!('ontouchstart' in window)) { // Only for non-touch devices
+            if (!('ontouchstart' in window)) {
                 card.classList.remove('active');
                 audio.pause();
                 audio.currentTime = 0;
