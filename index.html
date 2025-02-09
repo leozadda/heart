@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>KIWI <3 </title>
-        <link rel="icon" type="image/x-icon" href="./favicon.ico">
+    <link rel="icon" type="image/x-icon" href="./favicon.ico">
     <style>
         *,
         *::after,
@@ -30,12 +30,11 @@
                 #e4c3ff 50%,
                 #d57aff 75%,
                 #6200ff 100%
-                );
-
+            );
           display: flex;
           flex-direction: column;
           justify-content: center;
-          height: 100vh;
+          min-height: 100vh;
           width: 100%;
         }
 
@@ -43,7 +42,7 @@
           align-items: center;
           display: flex;
           flex-wrap: nowrap;
-          height: 100%;
+          min-height: 100vh;
           justify-content: space-evenly;
           padding: 1rem;
         }
@@ -138,21 +137,39 @@
           width: 100%;
         }
 
-        .card:hover {
-          box-shadow:
-          -.1rem 1.7rem 6.6rem -3.2rem rgba(0,0,0,0.75);
+        .card.active {
+          box-shadow: -.1rem 1.7rem 6.6rem -3.2rem rgba(0,0,0,0.75);
           width: 40rem;
         }
 
-        .card:hover .flip-card__container {
+        .card.active .flip-card__container {
           transform: rotateY(-180deg);
         }
 
-        .card:hover .inside-page {
+        .card.active .inside-page {
           box-shadow: inset 1rem 0px 5rem -2.5rem rgba(0,0,0,0.1);
         }
 
-        /* Add styles to hide audio controls */
+        /* Media query for smaller screens */
+        @media (max-width: 480px) {
+          .card {
+            height: 16rem;
+            width: 16rem;
+          }
+
+          .card.active {
+            width: 32rem;
+          }
+
+          .flip-card,
+          .card-front,
+          .card-back,
+          .inside-page {
+            height: 16rem;
+            width: 16rem;
+          }
+        }
+
         .card-audio {
           display: none;
         }
@@ -163,7 +180,6 @@
         <section class="card-area">
             <section class="card-section">
                 <div class="card">
-                    <!-- Add audio element -->
                     <audio id="cardAudio" class="card-audio">
                         <source src="./harp-song.mp3" type="audio/mpeg">
                         Your browser does not support the audio element.
@@ -190,17 +206,47 @@
         const audio = document.getElementById('cardAudio');
         let isPlaying = false;
 
+        // Function to toggle card state
+        function toggleCard() {
+            card.classList.toggle('active');
+            
+            if (card.classList.contains('active')) {
+                if (!isPlaying) {
+                    audio.play().catch(e => console.log('Audio play failed:', e));
+                    isPlaying = true;
+                }
+            } else {
+                audio.pause();
+                audio.currentTime = 0;
+                isPlaying = false;
+            }
+        }
+
+        // Handle both click and touch events
+        card.addEventListener('click', toggleCard);
+        card.addEventListener('touchend', function(e) {
+            e.preventDefault(); // Prevent default touch behavior
+            toggleCard();
+        });
+
+        // Optional: Keep mouse events for desktop
         card.addEventListener('mouseenter', () => {
-            if (!isPlaying) {
-                audio.play();
-                isPlaying = true;
+            if (!('ontouchstart' in window)) { // Only for non-touch devices
+                card.classList.add('active');
+                if (!isPlaying) {
+                    audio.play().catch(e => console.log('Audio play failed:', e));
+                    isPlaying = true;
+                }
             }
         });
 
         card.addEventListener('mouseleave', () => {
-            audio.pause();
-            audio.currentTime = 0;
-            isPlaying = false;
+            if (!('ontouchstart' in window)) { // Only for non-touch devices
+                card.classList.remove('active');
+                audio.pause();
+                audio.currentTime = 0;
+                isPlaying = false;
+            }
         });
     </script>
 </body>
